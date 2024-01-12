@@ -35,9 +35,10 @@ class CoachController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $search_parameter)
     {
-        //
+        $coaches = Coach::where('first_name', 'like', '%' . $search_parameter . '%')->orWhere('last_name', 'like', '%' . $search_parameter . '%')->get();
+        return response()->json($coaches);
     }
 
     /**

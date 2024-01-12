@@ -35,3 +35,5 @@ Route::middleware('auth')->resource('teams', TeamController::class);
 Route::get('/players', [PlayerController::class, 'index']);
 
 Route::get('/players/{search_parameter}', [PlayerController::class, 'show']);
+
+Route::get('/coaches/{search_parameter}', [CoachController::class, 'show']);
