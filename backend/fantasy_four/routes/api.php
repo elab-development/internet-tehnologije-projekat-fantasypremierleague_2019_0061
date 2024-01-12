@@ -33,3 +33,5 @@ Route::middleware('auth')->post('/logout', [AuthController::class, 'logout']);
 Route::middleware('auth')->resource('teams', TeamController::class);
 
 Route::get('/players', [PlayerController::class, 'index']);
+
+Route::get('/players/{search_parameter}', [PlayerController::class, 'show']);
