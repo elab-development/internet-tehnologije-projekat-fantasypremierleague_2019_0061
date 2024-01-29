@@ -13,10 +13,24 @@
     margin-bottom: 20px;
   }
   
- form {
+ #player-input-form {
     display: flex;
     flex-direction: column;
-    max-width: 300px;
+    width: 400px;
+    height: 400px;
+    background-color: white;
+    padding: 20px;
+  }
+
+  .player-input-field{
+    background-color: black;
+    flex-basis: 20%;
+    position: static;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
   }
   
   label {

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../css/LandingPage.css'; // Import the CSS file
 import NavigationMenu from './NavigationMenu';
+import CurrentGameDataField from './CurrentGameDataField';
 
 const LandingPage = () => {
   const [name, setName] = useState('');
@@ -36,6 +37,8 @@ const LandingPage = () => {
         <br />
         <button type="submit">Register</button>
       </form>
+      <div id='game-data'>
+      </div>
       <Link to="/login" id='link'>
         Go to the login page
       </Link>

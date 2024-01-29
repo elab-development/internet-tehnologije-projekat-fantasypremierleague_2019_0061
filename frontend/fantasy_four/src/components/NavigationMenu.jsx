@@ -4,7 +4,7 @@ import '../css/NavigationMenu.css';
 
 const NavigationMenu = () => {
 return (
-    <div>
+    <div id='navmenu'>
        <ul>
         <li><Link to="/">home page</Link></li>
         <li><Link to="/create_team">my team</Link></li>
