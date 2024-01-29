@@ -13,7 +13,7 @@ const LoginPage = () => {
 
 return (
     <BackgroundImageRotator>
-        <h1>Welcome to FantasyFour</h1>
+        <h1 style={{fontSize: '70px'}}>Welcome to FantasyFour</h1>
         <form onSubmit={handleFormSubmit}>
     
         <label>

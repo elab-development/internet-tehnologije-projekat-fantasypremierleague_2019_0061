@@ -17,7 +17,7 @@ const LandingPage = () => {
     
     <BackgroundImageRotator>
 
-      <h1>Welcome to FantasyFour</h1>
+      <h1 style={{fontSize: '70px'}}>Welcome to FantasyFour</h1>
       <form onSubmit={handleFormSubmit}>
         <label>
           Name:
@@ -41,7 +41,7 @@ const LandingPage = () => {
       <div id='game-data'>
       </div>
       <Link to="/login" id='link'>
-        Go to the login page
+        I already have an account, go to the login page
       </Link>
 
     </BackgroundImageRotator>
