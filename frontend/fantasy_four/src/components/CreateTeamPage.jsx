@@ -8,8 +8,10 @@ import BackgroundImageRotator from './BackgroundImageRotator';
 
 const CreateTeamPage = () => {
 return (
+    <>
+    <NavigationMenu />
     <BackgroundImageRotator>
-        <NavigationMenu />
+        
         <h1>Create your team</h1>
         <form id='player-input-form'>
             <label htmlFor="player-search">Enter the player's name here:</label>
@@ -18,6 +20,7 @@ return (
         </form>
         <Link to="/login" id='link'>Go back to the login page</Link>
     </BackgroundImageRotator>
+    </>
 );
 };
 

@@ -15,6 +15,7 @@ const LoginPage = () => {
 return (
     <BackgroundImageRotator>
         <h1 style={{fontSize: '70px'}}>Welcome to FantasyFour</h1>
+        <h3>If you have already created an account, feel free to log in and play the game!</h3>
         <form onSubmit={handleFormSubmit}>
     
         <label>

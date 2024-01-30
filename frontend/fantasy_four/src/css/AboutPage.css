@@ -10,12 +10,10 @@
       height: 100vh;
       color: #fff;
       padding: 50px;
-      overflow-y: scroll;
     }
     
     h1 {
       margin-bottom: 20px;
-      margin-top: 150px;
       position: static;
     }
     

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../css/LandingPage.css';
-import CurrentGameDataField from './CurrentGameDataField';
 import BackgroundImageRotator from './BackgroundImageRotator';
 import NavigationMenu from './NavigationMenu';
  
@@ -21,9 +20,12 @@ const LandingPage = () => {
   };
  
   return (
-    <BackgroundImageRotator>
+    <>
     <NavigationMenu></NavigationMenu>
-      <h1 style={{ fontSize: '70px' }}>Welcome to FantasyFour</h1>
+    <BackgroundImageRotator>
+    
+      <h1 style={{ fontSize: '70px'}}>Welcome to FantasyFour</h1>
+      <h3>Feel free to register and enjoy the game!</h3>
       <form onSubmit={handleFormSubmit}>
         <label>Name:</label>
         <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
@@ -38,11 +40,12 @@ const LandingPage = () => {
           Register
         </button>
       </form>
-      <div id='game-data'></div>
+     
       <Link to="/login" id='link'>
         I already have an account, go to the login page
       </Link>
     </BackgroundImageRotator>
+    </>
   );
 };
  

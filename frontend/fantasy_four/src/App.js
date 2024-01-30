@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route} from 'react-router-dom';
 import Switch from 'react-router-dom';
 import CreateTeamPage from './components/CreateTeamPage';
 import AboutPage from './components/AboutPage';
+import GameDataPage from './components/GameDataPage';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Route path="/login" element={<LoginPage />}></Route>
       <Route path="/create_team" element={<CreateTeamPage />}></Route>
       <Route path="/about" element={<AboutPage />}></Route>
+      <Route path="/game_data" element={<GameDataPage />}></Route>
     </Routes>
   </BrowserRouter>
   );

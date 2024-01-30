@@ -21,8 +21,8 @@ const NavigationMenu = () => {
         <li className={isCurrentPage('/about') ? 'active' : ''}>
           <Link to="/about">about</Link>
         </li>
-        <li className={isCurrentPage('/logout') ? 'active' : ''}>
-          <Link to="/logout">log out</Link>
+        <li className={isCurrentPage('/game_data') ? 'active' : ''}>
+          <Link to="/game_data">game data</Link>
         </li>
       </ul>
     </div>
