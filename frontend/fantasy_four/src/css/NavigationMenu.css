@@ -27,3 +27,6 @@ a{
     color: white;
 }
 
+#navmenu ul li.active {
+    background-color: green;
+  }

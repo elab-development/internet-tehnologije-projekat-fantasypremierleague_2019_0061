@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import '../css/LandingPage.css';
 import CurrentGameDataField from './CurrentGameDataField';
 import BackgroundImageRotator from './BackgroundImageRotator';
+import NavigationMenu from './NavigationMenu';
 
 const LandingPage = () => {
   const [name, setName] = useState('');
@@ -16,7 +17,7 @@ const LandingPage = () => {
   return (
     
     <BackgroundImageRotator>
-
+      <NavigationMenu></NavigationMenu>
       <h1 style={{fontSize: '70px'}}>Welcome to FantasyFour</h1>
       <form onSubmit={handleFormSubmit}>
         <label>

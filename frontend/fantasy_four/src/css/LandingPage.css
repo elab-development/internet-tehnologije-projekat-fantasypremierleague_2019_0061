@@ -14,6 +14,7 @@
   
   h1 {
     margin-bottom: 20px;
+    margin-top: 150px;
     position: static;
   }
   
@@ -49,7 +50,7 @@
   
   #link {
     margin-top: 20px;
-    color: white;
+    color: rgb(5, 93, 31);
     text-decoration: none;
   }
   

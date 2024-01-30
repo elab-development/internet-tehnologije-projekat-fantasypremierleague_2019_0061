@@ -1,7 +1,7 @@
 import React from 'react';
 import NavigationMenu from './NavigationMenu';
 import BackgroundImageRotator from './BackgroundImageRotator';
-import '../css/LandingPage.css';
+import '../css/AboutPage.css';
 
 const AboutPage = () => {
     return (

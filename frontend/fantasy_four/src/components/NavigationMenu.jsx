@@ -1,18 +1,32 @@
-import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import '../css/NavigationMenu.css';
-
+ 
 const NavigationMenu = () => {
-return (
+  const location = useLocation();
+ 
+  const isCurrentPage = (path) => {
+    return location.pathname === path;
+  };
+ 
+  return (
     <div id='navmenu'>
-       <ul>
-        <li><Link to="/">home page</Link></li>
-        <li><Link to="/create_team">my team</Link></li>
-        <li><Link to="/about">about</Link></li>
-        <li>log out</li>
-       </ul>
+      <ul>
+        <li className={isCurrentPage('/') ? 'active' : ''}>
+          <Link to="/">home page</Link>
+        </li>
+        <li className={isCurrentPage('/create_team') ? 'active' : ''}>
+          <Link to="/create_team">my team</Link>
+        </li>
+        <li className={isCurrentPage('/about') ? 'active' : ''}>
+          <Link to="/about">about</Link>
+        </li>
+        <li className={isCurrentPage('/logout') ? 'active' : ''}>
+          <Link to="/logout">log out</Link>
+        </li>
+      </ul>
     </div>
-);
+  );
 };
-
+ 
 export default NavigationMenu;

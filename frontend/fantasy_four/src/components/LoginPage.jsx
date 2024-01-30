@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import '../css/LandingPage.css'; 
 import BackgroundImageRotator from './BackgroundImageRotator';
 
+
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
