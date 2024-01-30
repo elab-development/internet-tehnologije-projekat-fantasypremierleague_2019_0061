@@ -9,6 +9,8 @@ const BackgroundImageRotator = ({children}) => {
     'photos/image3.jpeg',
     'photos/image4.jpeg',
     'photos/image5.jpeg',
+    'photos/image6.jpg',
+    'photos/image7.jpg'
   ];
 
   useEffect(() => {
