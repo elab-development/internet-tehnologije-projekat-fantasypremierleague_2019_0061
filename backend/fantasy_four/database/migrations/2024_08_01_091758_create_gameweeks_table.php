@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('teams', function (Blueprint $table) {
+        Schema::create('gameweeks', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->integer('deadline');
+            $table->boolean('is_current');
+            $table->boolean('is_next');
         });
     }
 
@@ -22,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('teams');
+        Schema::dropIfExists('gameweeks');
     }
 };

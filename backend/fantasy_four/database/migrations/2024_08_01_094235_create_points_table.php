@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('teams', function (Blueprint $table) {
-           $table->unsignedBigInteger('coach_id');
+        Schema::create('points', function (Blueprint $table) {
+            $table->foreignId('team_id');
+            $table->foreignId('gameweek_id');
+            $table->integer('total');
 
-           $table->foreign('coach_id')->references('id')->on('coaches');
+            $table->primary(['team_id', 'gameweek_id']);
         });
     }
 
@@ -23,9 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('teams', function (Blueprint $table) {
-            $table->dropForeign(['coach_id']);
-            $table->dropColumn('coach_id');
-        });
+        Schema::dropIfExists('points');
     }
 };
