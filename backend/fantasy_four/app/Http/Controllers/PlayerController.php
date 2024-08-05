@@ -9,12 +9,10 @@ class PlayerController extends Controller
 {
     public function search(Request $request)
     {
-        // Retrieve query parameters
         $position = $request->query('position');
         $club = $request->query('club');
         $maxCost = $request->query('max_cost');
 
-        // Build the query
         $query = Player::query();
 
         if ($position) {
@@ -29,10 +27,10 @@ class PlayerController extends Controller
             $query->where('cost', '<=', $maxCost);
         }
 
-        // Execute the query
+        $query->orderBy('total_points', 'desc');
+
         $players = $query->get();
 
-        // Return the result as a JSON response (or you can return a view)
         return response()->json([$position, $club, $maxCost, $players]);
     }
 }
