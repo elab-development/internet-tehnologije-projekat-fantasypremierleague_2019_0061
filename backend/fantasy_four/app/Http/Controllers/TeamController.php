@@ -42,6 +42,8 @@ class TeamController extends Controller
         $team = Team::create([
             'name' => $validated['name'],
             'user_id' => $userId,
+            'budget' => 100.0,
+            'is_valid' => false
         ]);
 
         // Return a JSON response with the created team
