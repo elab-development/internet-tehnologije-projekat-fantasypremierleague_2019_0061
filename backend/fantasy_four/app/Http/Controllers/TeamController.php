@@ -39,12 +39,20 @@ class TeamController extends Controller
         $userId = Auth::id();
 
         // Create a new team with the authenticated user ID
-        $team = Team::create([
+        /*$team = Team::create([
             'name' => $validated['name'],
             'user_id' => $userId,
-            'budget' => 100.0,
+            'budget' => 1000.0,
             'is_valid' => false
-        ]);
+        ]);*/
+
+        $team = new Team();
+        $team->user_id = $userId;
+        $team->name = $validated['name'];
+        $team->budget = 1000.0;
+        $team->is_valid = false;
+
+        $team->save();
 
         // Return a JSON response with the created team
         return response()->json($team, 201);

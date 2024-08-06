@@ -9,6 +9,8 @@ class Acquisition extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     public function team(){
         return $this->belongsTo(Team::class);
     }

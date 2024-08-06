@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\PlayerController;
+use App\Http\Controllers\AcquisitionController;
 
 
 use Illuminate\Support\Facades\Auth;
@@ -16,6 +17,10 @@ Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logo
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::resource('teams', TeamController::class);
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::resource('acquisitions', AcquisitionController::class);
 });
 
 Route::get('/test-auth', function () {
