@@ -49,7 +49,7 @@ class TeamController extends Controller
         $team = new Team();
         $team->user_id = $userId;
         $team->name = $validated['name'];
-        $team->budget = 1000.0;
+        $team->budget = 300.0;
         $team->is_valid = false;
 
         $team->save();
