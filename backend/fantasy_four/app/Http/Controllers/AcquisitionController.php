@@ -32,15 +32,13 @@ class AcquisitionController extends Controller
     public function store(Request $request)
     {
         $playerIds = $request->all();
-        $userId = Auth::id(); // Get the currently logged-in user's ID
-        $team = Team::find($userId); // Find the team using the user_id as the primary key
+        $userId = Auth::id(); 
+        $team = Team::find($userId); 
 
-        // Validate if team exists
         if (!$team) {
             return response()->json(['error' => 'Team not found for the current user.'], 404);
         }
 
-        // Validate the number of player IDs
         if (count($playerIds) !== 4) {
             return response()->json(['error' => 'Exactly four player IDs are required.'], 400);
         }
@@ -55,7 +53,6 @@ class AcquisitionController extends Controller
                 return response()->json(['error' => 'Player not found.'], 404);
             }
 
-            // Check if the player's position is unique among the acquisitions
             if (in_array($player->position, $positions)) {
                 return response()->json(['error' => 'Each player must have a unique position.'], 400);
             }
@@ -64,12 +61,10 @@ class AcquisitionController extends Controller
             $totalCost += $player->cost;
         }
 
-        // Check if the total cost is within the budget limit
         if ($totalCost > 1000) {
             return response()->json(['error' => 'Total cost exceeds the budget limit of 1000.'], 400);
         }
 
-        // Store acquisitions
         foreach ($playerIds as $playerId) {
             $newAcquisition = new Acquisition();
             $newAcquisition->player_id = $playerId;
@@ -77,7 +72,6 @@ class AcquisitionController extends Controller
             $newAcquisition->save();
         }
 
-        // Deduct the total cost from the team's budget
         $team->budget -= $totalCost;
         $team->is_valid = true;
         $team->save();
@@ -87,22 +81,86 @@ class AcquisitionController extends Controller
 
     public function getPlayersByTeamAcquisitions($userId)
     {
-        // Find the team by user ID
         $team = Team::find($userId);
 
-        // Validate if team exists
         if (!$team) {
             return response()->json(['error' => 'Team not found for the current user.'], 404);
         }
 
-        // Retrieve all acquisitions for the team and load the player relationships
         $acquisitions = $team->acquisitions()->with('player')->get();
 
-        // Extract the player data
         $players = $acquisitions->pluck('player');
 
-        // Return the players
         return response()->json(['players' => $players], 200);
+    }
+
+    public function transferPlayers(Request $request)
+    {
+        $userId = Auth::id(); 
+        $team = Team::find($userId);
+
+        if (!$team) {
+            return response()->json(['error' => 'Team not found for the current user.'], 404);
+        }
+
+        $playerPairs = $request->input('player_pairs');
+
+        $totalCostDifference = 0;
+
+        foreach ($playerPairs as $pair) {
+            $oldPlayerId = $pair['old_player_id'];
+            $newPlayerId = $pair['new_player_id'];
+
+            $oldPlayer = Player::find($oldPlayerId);
+            $newPlayer = Player::find($newPlayerId);
+
+            if (!$oldPlayer || !$newPlayer) {
+                return response()->json(['error' => 'One or both players not found.'], 404);
+            }
+
+            if ($oldPlayer->position !== $newPlayer->position) {
+                return response()->json(['error' => 'Players must be of the same position for transfer.'], 400);
+            }
+
+            $costDifference = $newPlayer->cost - $oldPlayer->cost;
+            $totalCostDifference += $costDifference;
+        }
+
+        // Calculate the total value of the squad after transfers
+        $currentSquadValue = $team->acquisitions()->with('player')->get()->sum(function ($acquisition) {
+            return $acquisition->player->cost;
+        });
+
+        $newSquadValue = $currentSquadValue + $totalCostDifference;
+
+        // Check if the squad value exceeds the limit
+        if ($newSquadValue > 300) {
+            return response()->json(['error' => 'Total squad value exceeds the limit of 300.'], 400);
+        }
+
+        // If the budget check passes, proceed to update the acquisitions
+        foreach ($playerPairs as $pair) {
+            $oldPlayerId = $pair['old_player_id'];
+            $newPlayerId = $pair['new_player_id'];
+
+            // Update the acquisition to replace the old player with the new player
+            $acquisition = Acquisition::where('team_user_id', $userId)
+                ->where('player_id', $oldPlayerId)
+                ->first();
+
+            if ($acquisition) {
+                $acquisition->player_id = $newPlayerId;
+                $acquisition->save();
+            } else {
+                return response()->json(['error' => 'Acquisition not found for the player.'], 404);
+            }
+        }
+
+        // Adjust the team's budget
+        $team->budget -= $totalCostDifference;
+        $team->save();
+
+        return response()->json(['success' => 'Players transferred successfully.', 'team' => $team], 200);
     }
 
     /**

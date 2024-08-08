@@ -23,6 +23,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('acquisitions', AcquisitionController::class);
 });
 
+Route::middleware('auth:sanctum')->get('/teams/{userId}/players', [AcquisitionController::class, 'getPlayersByTeamAcquisitions']);
+
+Route::middleware('auth:sanctum')->post('/teams/transfer', [AcquisitionController::class, 'transferPlayers']);
+
 Route::get('/test-auth', function () {
     return response()->json(['user_id' => Auth::id()]);
 });
