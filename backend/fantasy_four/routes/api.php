@@ -27,6 +27,8 @@ Route::middleware('auth:sanctum')->get('/teams/{userId}/players', [AcquisitionCo
 
 Route::middleware('auth:sanctum')->post('/teams/transfer', [AcquisitionController::class, 'transferPlayers']);
 
+Route::middleware('auth:sanctum')->get('/team/live-scores', [AcquisitionController::class, 'getLiveScores']);
+
 Route::get('/test-auth', function () {
     return response()->json(['user_id' => Auth::id()]);
 });
