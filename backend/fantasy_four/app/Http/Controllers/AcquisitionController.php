@@ -7,6 +7,7 @@ use App\Models\Acquisition;
 use App\Models\Team;
 use App\Models\Player;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class AcquisitionController extends Controller
 {
@@ -126,24 +127,20 @@ class AcquisitionController extends Controller
             $totalCostDifference += $costDifference;
         }
 
-        // Calculate the total value of the squad after transfers
         $currentSquadValue = $team->acquisitions()->with('player')->get()->sum(function ($acquisition) {
             return $acquisition->player->cost;
         });
 
         $newSquadValue = $currentSquadValue + $totalCostDifference;
 
-        // Check if the squad value exceeds the limit
         if ($newSquadValue > 300) {
             return response()->json(['error' => 'Total squad value exceeds the limit of 300.'], 400);
         }
 
-        // If the budget check passes, proceed to update the acquisitions
         foreach ($playerPairs as $pair) {
             $oldPlayerId = $pair['old_player_id'];
             $newPlayerId = $pair['new_player_id'];
 
-            // Update the acquisition to replace the old player with the new player
             $acquisition = Acquisition::where('team_user_id', $userId)
                 ->where('player_id', $oldPlayerId)
                 ->first();
@@ -156,11 +153,54 @@ class AcquisitionController extends Controller
             }
         }
 
-        // Adjust the team's budget
         $team->budget -= $totalCostDifference;
         $team->save();
 
         return response()->json(['success' => 'Players transferred successfully.', 'team' => $team], 200);
+    }
+
+    public function getLiveScores(Request $request)
+    {
+        $userId = Auth::id();
+
+        $team = Team::where('user_id', $userId)->first();
+
+        if (!$team) {
+            return response()->json(['error' => 'Team not found'], 404);
+        }
+
+        $playerIds = Acquisition::where('team_id', $team->id)->pluck('player_id');
+
+        if ($playerIds->isEmpty()) {
+            return response()->json(['error' => 'No players found in the team'], 404);
+        }
+
+        $gameweekId = $this->getCurrentGameweekId();
+        $response = Http::get("https://fantasy.premierleague.com/api/event/$gameweekId/live/");
+
+        if ($response->failed()) {
+            return response()->json(['error' => 'Failed to retrieve live scores'], 500);
+        }
+
+        $liveData = $response->json();
+
+        $playerScores = [];
+
+        foreach ($playerIds as $playerId) {
+            if (isset($liveData['elements'][$playerId])) {
+                $playerScores[] = [
+                    'player_id' => $playerId,
+                    'score' => $liveData['elements'][$playerId]['stats']['total_points'],
+                ];
+            }
+        }
+
+        return response()->json($playerScores);
+    }
+
+    private function getCurrentGameweekId()
+    {
+        return 1;
     }
 
     /**

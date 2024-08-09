@@ -14,6 +14,7 @@ class PlayersTableSeeder extends Seeder
      */
     public function run(): void
     {
+        DB::table('players')->truncate();
         // Fetch data from FPL API
         $response = Http::get('https://fantasy.premierleague.com/api/bootstrap-static/');
         $data = $response->json();
@@ -27,7 +28,8 @@ class PlayersTableSeeder extends Seeder
                 'cost' => $player['now_cost'],
                 'position'=> $player['element_type'],
                 'total_points' => $player['total_points'],
-                'club_id' => $player['team']
+                'club_id' => $player['team'],
+                'photo' => 'https://resources.premierleague.com/premierleague/photos/players/110x140/p' . str_replace('jpg', 'png', $player['photo'])
             ];
         }, $players);
 
