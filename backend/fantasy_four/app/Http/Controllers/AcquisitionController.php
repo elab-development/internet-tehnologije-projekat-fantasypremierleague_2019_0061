@@ -169,7 +169,7 @@ class AcquisitionController extends Controller
             return response()->json(['error' => 'Team not found'], 404);
         }
 
-        $playerIds = Acquisition::where('team_id', $team->id)->pluck('player_id');
+        $playerIds = Acquisition::where('team_user_id', $team->user_id)->pluck('player_id');
 
         if ($playerIds->isEmpty()) {
             return response()->json(['error' => 'No players found in the team'], 404);
@@ -200,7 +200,7 @@ class AcquisitionController extends Controller
 
     private function getCurrentGameweekId()
     {
-        return 1;
+        return 2;
     }
 
     /**
