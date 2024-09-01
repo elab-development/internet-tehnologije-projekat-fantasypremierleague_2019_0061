@@ -8,29 +8,27 @@ use App\Models\Player;
 class PlayerController extends Controller
 {
     public function search(Request $request)
-    {
-        $position = $request->query('position');
-        $club = $request->query('club');
-        $maxCost = $request->query('max_cost');
+{
+    // Validate that all inputs are numeric
+    $validated = $request->validate([
+        'position' => 'nullable|integer|min:1',
+        'max_cost' => 'nullable|numeric|min:0'
+    ]);
 
-        $query = Player::query();
+    $query = Player::query();
 
-        if ($position) {
-            $query->where('position', $position);
-        }
-
-        if ($club) {
-            $query->where('club_id', $club);
-        }
-
-        if ($maxCost) {
-            $query->where('cost', '<=', $maxCost);
-        }
-
-        $query->orderBy('total_points', 'desc');
-
-        $players = $query->get();
-
-        return response()->json([$position, $club, $maxCost, $players]);
+    if (!empty($validated['position'])) {
+        $query->where('position', $validated['position']);
     }
+
+    if (isset($validated['max_cost'])) {
+        $query->where('cost', '<=', $validated['max_cost']);
+    }
+
+    $query->orderBy('total_points', 'desc');
+
+    $players = $query->get();
+
+    return response()->json($players);
+}
 }
