@@ -41,7 +41,7 @@ class AcquisitionController extends Controller
         }
 
         if (count($playerIds) !== 4) {
-            return response()->json(['error' => 'Exactly four player IDs are required.'], 400);
+            return response()->json(['error' => 'Exactly four player IDs are required, ' . count($playerIds) . ' given.'], 400);
         }
 
         $totalCost = 0;
@@ -80,8 +80,10 @@ class AcquisitionController extends Controller
         return response()->json(['success' => 'Acquisitions stored successfully.', 'team' => $team], 201);
     }
 
-    public function getPlayersByTeamAcquisitions($userId)
+    public function getPlayersByTeamAcquisitions(Request $request)
     {
+        $userId = Auth::id();
+
         $team = Team::find($userId);
 
         if (!$team) {

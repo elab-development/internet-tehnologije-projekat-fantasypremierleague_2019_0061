@@ -58,6 +58,19 @@ class TeamController extends Controller
         return response()->json($team, 201);
     }
 
+    public function getUserTeam(Request $request)
+{
+    $userId = Auth::id();
+
+    $team = Team::where('user_id', $userId)->first();
+
+    if ($team) {
+        return response()->json($team);
+    } else {
+        return response()->json(['message' => 'No team found for this user.'], 404);
+    }
+}
+
     /**
      * Display the specified resource.
      */
