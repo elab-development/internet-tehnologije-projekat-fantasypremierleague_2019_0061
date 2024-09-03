@@ -3,6 +3,7 @@ import NavigationMenu from './NavigationMenu';
 import '../css/CreateTeamPage.css';
 import BackgroundImageRotator from './BackgroundImageRotator';
 import PlayerField from './PlayerField';
+import { useNavigate } from 'react-router-dom';
 
 const CreateTeamPage = () => {
     const [username, setUsername] = useState('');
@@ -10,6 +11,7 @@ const CreateTeamPage = () => {
     const [players, setPlayers] = useState([]);
     const [selectedPlayers, setSelectedPlayers] = useState([]);
     const [teamPlayers, setTeamPlayers] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const storedUsername = localStorage.getItem('username');
@@ -148,7 +150,7 @@ const CreateTeamPage = () => {
 
         if (response.ok) {
             localStorage.removeItem('token');
-            alert('Logged out successfully');
+            navigate('/');
         } else {
             alert('Logout failed');
         }
