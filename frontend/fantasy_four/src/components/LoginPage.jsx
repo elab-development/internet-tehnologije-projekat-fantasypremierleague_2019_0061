@@ -63,7 +63,9 @@ const LoginPage = () => {
                 <button type="submit" id="register-button">Login</button>
             </form>
             {message && <p>{message}</p>}
-            <Link to="/create_team" id="link">Go to the team creation page</Link>
+            <Link to="/forgot_password" id='link'>
+          I forgot my password. Take me to the page for setting the new password.
+        </Link>
         </BackgroundImageRotator>
     );
 };
