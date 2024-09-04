@@ -43,11 +43,12 @@ class AuthController extends Controller
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => 'user'
         ]);
 
         return response()->json([
             'status' => 'success',
-            'message' => 'User registered and logged in successfully.',
+            'message' => 'User registered successfully.',
             'user' => $user,
         ], 201);
     }
@@ -95,4 +96,27 @@ class AuthController extends Controller
             'message' => 'User logged out successfully.',
         ]);
     }
+
+    public function forgotPassword(Request $request)
+{
+    // Validate the request data
+    $validated = $request->validate([
+        'email' => 'required|email',
+        'new_password' => 'required|string|min:8'
+    ]);
+
+    // Find the user by email
+    $user = User::where('email', $validated['email'])->first();
+
+    // Check if the user exists
+    if (!$user) {
+        return response()->json(['error' => 'User with this email does not exist.'], 404);
+    }
+
+    // Update the user's password
+    $user->password = Hash::make($validated['new_password']);
+    $user->save();
+
+    return response()->json(['message' => 'Password has been updated successfully.']);
+}
 }
