@@ -44,7 +44,7 @@ const CreateTeamPage = () => {
 
     const fetchTeamPlayers = async () => {
         const token = localStorage.getItem('token');
-        
+    
         const response = await fetch('http://localhost:8000/api/user/team/players', {
             method: 'GET',
             headers: {
@@ -52,15 +52,39 @@ const CreateTeamPage = () => {
                 'Content-Type': 'application/json',
             },
         });
-
+    
         if (response.ok) {
             const data = await response.json();
-            const players = data.players || []; // Extract the players array
-            setTeamPlayers(players);
+            const players = data.players || [];
+            
+            // Fetch live scores for these players
+            const liveScoreResponse = await fetch('http://localhost:8000/api/user/team/players/scores', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+    
+            if (liveScoreResponse.ok) {
+                const liveScores = await liveScoreResponse.json();
+                // Combine players with their live scores
+                const playersWithScores = players.map(player => {
+                    const scoreData = liveScores.find(score => score.player_id === player.id);
+                    return {
+                        ...player,
+                        score: scoreData ? scoreData.score : 0, // Default score to 0 if not found
+                    };
+                });
+    
+                setTeamPlayers(playersWithScores);
+            } else {
+                alert('Failed to fetch live scores.');
+            }
         } else {
             alert('Failed to fetch the players of your team.');
         }
-    }
+    };
 
     const createTeam = async (e) => {
         e.preventDefault();
@@ -262,7 +286,9 @@ const CreateTeamPage = () => {
                         <h2>Players</h2>
                         <ul>
                             {teamPlayers.map(player => (
-                                <li key={player.id}>{player.name}</li>
+                                <li key={player.id}>
+                                    {player.name} - Live Score: {player.score}
+                                </li>
                             ))}
                         </ul>
                     </div>
