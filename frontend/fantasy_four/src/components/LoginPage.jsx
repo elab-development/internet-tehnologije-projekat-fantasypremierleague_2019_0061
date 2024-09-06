@@ -27,9 +27,11 @@ const LoginPage = () => {
                 setMessage(`Login successful! ${data.message}`);
 
                 const username = data.user.username;
+                const role = data.user.role;
 
                 localStorage.setItem('token', data.token);
-                localStorage.setItem('username', username); 
+                localStorage.setItem('username', username);
+                localStorage.setItem('role', role);
                 navigate('/create_team');
             } else {
                 setMessage(`Login failed: ${data.message}`);
