@@ -58,43 +58,43 @@ class PlayerController extends Controller
         return response()->json($players);
     }
 
-    public function merge(Request $request, $id = null)
-    {
+    public function merge(Request $request)
+{
+    // Validate the input data, including the optional id field
+    $validated = $request->validate([
+        'id' => 'nullable|integer|exists:players,id', // Nullable if creating a new player
+        'name' => 'required|string|max:255',
+        'position' => 'required|integer|max:4',
+        'club_id' => 'required|integer|max:19',
+        'cost' => 'required|numeric|min:0',
+    ]);
 
-        // Validate the input data
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'position' => 'required|integer|max:4',
-            'club_id' => 'required|integer|max:19',
-            'cost' => 'required|numeric|min:0',
+    // Check if a player with the given id exists
+    $player = Player::find($validated['id']);
+
+    if ($player) {
+        // Update existing player
+        $player->name = $validated['name'];
+        $player->position = $validated['position'];
+        $player->club_id = $validated['club_id'];
+        $player->cost = $validated['cost'];
+        $player->save();
+        
+        return response()->json(['message' => 'Player updated successfully', 'player' => $player], 200);
+    } else {
+        // Insert new player
+        $newPlayer = Player::create([
+            'name' => $validated['name'],
+            'position' => $validated['position'],
+            'photo' => '', // Default value for photo
+            'total_points' => 0, // Default value for total points
+            'club_id' => $validated['club_id'],
+            'cost' => $validated['cost'],
         ]);
 
-        // Check if a player with the given id exists
-        $player = Player::find($id);
-
-        if ($player) {
-            // Update existing player
-            $player->name = $validated['name'];
-            $player->position = $validated['position'];
-            $player->club_id = $validated['club_id'];
-            $player->cost = $validated['cost'];
-            $player->save();
-            
-            return response()->json(['message' => 'Player updated successfully', 'player' => $player], 200);
-        } else {
-            // Insert new player
-            $newPlayer = Player::create([
-                'name' => $validated['name'],
-                'position' => $validated['position'],
-                'photo' => '',
-                'total_points' => 0,
-                'club_id' => $validated['club_id'],
-                'cost' => $validated['cost'],
-            ]);
-
-            return response()->json(['message' => 'Player created successfully', 'player' => $newPlayer], 201);
-        }
+        return response()->json(['message' => 'Player created successfully', 'player' => $newPlayer], 201);
     }
+}
 
     public function destroy($id)
     {

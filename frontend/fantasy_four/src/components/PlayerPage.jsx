@@ -1,19 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
 import NavigationMenu from './NavigationMenu';
 import BackgroundImageRotator from './BackgroundImageRotator';
+import '../css/LandingPage.css'; 
 
-const PlayerPage = ({ mode, playerPhoto }) => {
+const PlayerPage = ({ mode }) => {
     const { playerId } = useParams();
+    const navigate = useNavigate(); // For navigating after delete
     const [player, setPlayer] = useState({
         name: '',
         club: '',
-        cost: ''
+        cost: '',
+        position: '',
+        photo: ''
     });
 
     useEffect(() => {
-        if(mode === 'edit'){loadPlayer();}
-        
+        if (mode === 'edit') {
+            loadPlayer();
+        }
     }, [playerId]);
 
     const loadPlayer = async () => {
@@ -27,7 +32,8 @@ const PlayerPage = ({ mode, playerPhoto }) => {
                 name: data.name,
                 position: data.position,
                 clubId: data.club_id,
-                cost: data.cost
+                cost: data.cost,
+                photo: data.photo
             });
         } else {
             alert('An error occurred while fetching the player data');
@@ -42,12 +48,50 @@ const PlayerPage = ({ mode, playerPhoto }) => {
         }));
     };
 
+    const handleSaveChanges = async () => {
+        // Prepare the player data to be sent to the merge function
+        const playerData = {
+            id: playerId,
+            name: player.name,
+            position: player.position,
+            club_id: player.clubId,
+            cost: player.cost
+        };
+
+        const response = await fetch('http://localhost:8000/api/players/merge', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(playerData)
+        });
+
+        if (response.ok) {
+            alert('Player saved successfully');
+        } else {
+            alert('Failed to save player');
+        }
+    };
+
+    const handleDelete = async () => {
+        const response = await fetch(`http://localhost:8000/api/players/${playerId}`, {
+            method: 'DELETE'
+        });
+
+        if (response.ok) {
+            alert('Player deleted successfully');
+            navigate('/admin_dashboard'); // Redirect to admin page after deletion
+        } else {
+            alert('Failed to delete player');
+        }
+    };
+
     return (
         <>
             <NavigationMenu />
             <BackgroundImageRotator>
                 <h1 className="heading">Player Details (Mode: {mode})</h1>
-                {playerPhoto && <img src={playerPhoto} alt={`${player.name}`} />} {/* Display player photo */}
+                {player.photo && <img src={player.photo} alt={`${player.name}`} />} {/* Display player photo */}
                 <form>
                     <label htmlFor="name">Name:</label>
                     <input
@@ -73,7 +117,7 @@ const PlayerPage = ({ mode, playerPhoto }) => {
                     <input
                         type="text"
                         id="club"
-                        name="club"
+                        name="clubId" // Updated to match the state field
                         value={player.clubId}
                         onChange={handleChange}
                     />
@@ -87,8 +131,8 @@ const PlayerPage = ({ mode, playerPhoto }) => {
                         onChange={handleChange}
                     />
 
-                    <button type="button">Save changes</button> {/* Save button */}
-                    <button type="button" disabled={mode === 'create'}>Delete the player</button> {/* Delete button */}
+                    <button type="button" onClick={handleSaveChanges}>Save changes</button> {/* Save button */}
+                    <button type="button" onClick={handleDelete} disabled={mode === 'create'}>Delete the player</button> {/* Delete button */}
                 </form>
             </BackgroundImageRotator>
         </>

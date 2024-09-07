@@ -38,4 +38,5 @@ Route::get('/test-auth', function () {
 
 Route::get('/players/search', [PlayerController::class, 'search']);
 Route::get('/players/{id}', [PlayerController::class, 'getById']);
-Route::delete('/api/players/{id}', [PlayerController::class, 'destroy']);
+Route::delete('/players/{id}', [PlayerController::class, 'destroy']);
+Route::post('/players/merge', [PlayerController::class, 'merge']);

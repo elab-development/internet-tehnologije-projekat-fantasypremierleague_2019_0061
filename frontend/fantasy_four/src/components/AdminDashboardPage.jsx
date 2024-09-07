@@ -29,13 +29,15 @@ const AdminDashboardPage = () => {
     const handlePlayerSelection = (e) => {
         const playerId = e.target.value;
         const selectedPlayer = players.find(player => player.id === parseInt(playerId)); // Find the player by ID
-        
-        
-        if (playerId) {
-            // Navigate to PlayerPage with the selected player's ID
-            navigate(`/player/${playerId}`, {state: {playerPhoto: selectedPlayer.photo}});
+    
+        if (selectedPlayer) {
+            // Check if the photo exists and pass it, otherwise pass an empty string or a placeholder
+            const photo= selectedPlayer.photo ? selectedPlayer.photo : ''; 
+            navigate(`/player/${playerId}`, {state: {photo}});
+        } else {
+            console.error('Player not found or photo is undefined.');
         }
-    }
+    };
 
     return (
         <>
