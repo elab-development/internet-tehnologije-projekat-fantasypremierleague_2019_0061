@@ -19,8 +19,11 @@ const CreateTeamPage = () => {
             setUsername(storedUsername);
         }
         // Fetch the user's team when the component mounts
-        fetchUserTeam();
-        fetchTeamPlayers();
+       fetchUserTeam();
+        
+       fetchTeamPlayers();
+          
+
     }, []);
 
     const fetchUserTeam = async () => {
@@ -38,7 +41,7 @@ const CreateTeamPage = () => {
             const team = await response.json();
             setTeam(team);
         } else {
-            alert('Failed to fetch the team');
+            console.log('Failed to fetch the team');
         }
     };
 
@@ -78,6 +81,7 @@ const CreateTeamPage = () => {
                 });
     
                 setTeamPlayers(playersWithScores);
+                console.log(playersWithScores);
             } else {
                 alert('Failed to fetch live scores.');
             }
@@ -287,6 +291,7 @@ const CreateTeamPage = () => {
                         <ul>
                             {teamPlayers.map(player => (
                                 <li key={player.id}>
+                                    {player.photo && <img src={player.photo} alt={`${player.name}`} />} {/* Display player photo */}
                                     {player.name} - Live Score: {player.score}
                                 </li>
                             ))}

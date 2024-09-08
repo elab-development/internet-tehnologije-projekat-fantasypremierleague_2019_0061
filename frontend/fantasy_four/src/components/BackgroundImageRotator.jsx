@@ -26,7 +26,7 @@ const BackgroundImageRotator = ({children}) => {
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     minHeight: '100vh',
-    transition: 'background-image 1s ease-in-out'
+    transition: 'background-image 1s ease-in-out',
   };
 
   return (

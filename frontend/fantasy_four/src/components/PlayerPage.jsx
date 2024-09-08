@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
-import NavigationMenu from './NavigationMenu';
 import BackgroundImageRotator from './BackgroundImageRotator';
-import '../css/LandingPage.css'; 
 
 const PlayerPage = ({ mode }) => {
     const { playerId } = useParams();
@@ -87,12 +85,11 @@ const PlayerPage = ({ mode }) => {
     };
 
     return (
-        <>
-            <NavigationMenu />
+        
             <BackgroundImageRotator>
-                <h1 className="heading">Player Details (Mode: {mode})</h1>
+                <h1 className="heading">Player Details - {player.name}</h1>
                 {player.photo && <img src={player.photo} alt={`${player.name}`} />} {/* Display player photo */}
-                <form>
+                <form style={{backgroundColor: 'transparent'}}>
                     <label htmlFor="name">Name:</label>
                     <input
                         type="text"
@@ -135,7 +132,8 @@ const PlayerPage = ({ mode }) => {
                     <button type="button" onClick={handleDelete} disabled={mode === 'create'}>Delete the player</button> {/* Delete button */}
                 </form>
             </BackgroundImageRotator>
-        </>
+           
+        
     );
 };
 

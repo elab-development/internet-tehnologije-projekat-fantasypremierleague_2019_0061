@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import NavigationMenu from './NavigationMenu';
 import BackgroundImageRotator from './BackgroundImageRotator';
 
 const AdminDashboardPage = () => {
@@ -41,7 +40,6 @@ const AdminDashboardPage = () => {
 
     return (
         <>
-        <NavigationMenu />
         <BackgroundImageRotator>
             <h1>Admin dashboard</h1>
             <p>This is the interface that is dedicated for modifying the game-related data by the administrators.</p>
