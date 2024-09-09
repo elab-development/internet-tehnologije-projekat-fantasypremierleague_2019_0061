@@ -16,8 +16,4 @@ class Player extends Model
     public function acquisitions(){
         return $this->hasMany(Acquisition::class);
     }
-
-    public function performances(){
-        return $this->hasMany(Performance::class);
-    }
 }

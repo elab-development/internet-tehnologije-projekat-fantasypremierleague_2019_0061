@@ -28,8 +28,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::middleware('auth:sanctum')->get('/user/team/players', [AcquisitionController::class, 'getPlayersByTeamAcquisitions']);
 
-Route::middleware('auth:sanctum')->post('/teams/transfer', [AcquisitionController::class, 'transferPlayers']);
-
 Route::middleware('auth:sanctum')->get('/user/team/players/scores', [AcquisitionController::class, 'getLiveScores']);
 
 Route::get('/test-auth', function () {

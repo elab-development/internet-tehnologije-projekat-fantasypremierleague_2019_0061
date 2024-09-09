@@ -28,8 +28,4 @@ class Team extends Model
     public function acquisitions(){
         return $this->hasMany(Acquisition::class);
     }
-
-    public function points(){
-        return $this->hasMany(Point::class);
-    }
 }
