@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Player;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
 
 class PlayerController extends Controller
 {
@@ -109,6 +110,75 @@ class PlayerController extends Controller
         $player->delete();
 
         return response()->json(['message' => 'Player deleted successfully']);
+    }
+
+    public function getBestPlayers(){
+        // Fetch data from the FPL API
+        $response = Http::get('https://fantasy.premierleague.com/api/bootstrap-static/');
+        
+        // Handle failed response
+        if($response->failed()){
+            return response()->json(['message' => 'Fetching the data was unsuccessful']);
+        }
+    
+        // Get the JSON response and extract players
+        $data = $response->json();
+        $players = $data['elements'];
+    
+        $goalkeepers = [];
+        $defenders = [];
+        $midfielders = [];
+        $forwards = [];
+
+        foreach ($players as $player) {
+            $playerData = [
+                'id' => $player['id'],
+                'name' => $player['web_name'],
+                'total_points' => $player['total_points'],
+                'photo' => 'https://resources.premierleague.com/premierleague/photos/players/110x140/p' . str_replace('jpg', 'png', $player['photo'])
+            ];
+    
+            if ($player['element_type'] == 1) {
+                $goalkeepers[] = $playerData;
+            } elseif ($player['element_type'] == 2) {
+                $defenders[] = $playerData;
+            } elseif ($player['element_type'] == 3) {
+                $midfielders[] = $playerData;
+            } elseif ($player['element_type'] == 4) {
+                $forwards[] = $playerData;
+            }
+        }
+
+        $bestPlayers = [
+            'goalkeeper' => null,
+            'defender' => null,
+            'midfielder' => null,
+            'forward' => null,
+        ];
+
+        foreach($goalkeepers as $goalkeeper){
+            if($bestPlayers['goalkeeper'] == null || $goalkeeper['total_points'] > $bestPlayers['goalkeeper']['total_points']){
+                $bestPlayers['goalkeeper'] = $goalkeeper;
+            }
+        }
+        foreach($defenders as $defender){
+            if($bestPlayers['defender'] == null || $defender['total_points'] > $bestPlayers['defender']['total_points']){
+                $bestPlayers['defender'] = $defender;
+            }
+        }
+        foreach($midfielders as $midfielder){
+            if($bestPlayers['midfielder'] == null || $midfielder['total_points'] > $bestPlayers['midfielder']['total_points']){
+                $bestPlayers['midfielder'] = $midfielder;
+            }
+        }
+        foreach($forwards as $forward){
+            if($bestPlayers['forward'] == null || $forward['total_points'] > $bestPlayers['forward']['total_points']){
+                $bestPlayers['forward'] = $forward;
+            }
+        }
+
+        return response()->json($bestPlayers);
+       
     }
 
 }

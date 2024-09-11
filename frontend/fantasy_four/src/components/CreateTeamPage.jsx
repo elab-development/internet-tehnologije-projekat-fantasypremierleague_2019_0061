@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import {Link} from 'react-router-dom';
 import NavigationMenu from './NavigationMenu';
 import '../css/CreateTeamPage.css';
 import BackgroundImageRotator from './BackgroundImageRotator';
@@ -7,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 const CreateTeamPage = () => {
     const [username, setUsername] = useState('');
+    const [token, setToken] = useState('');
     const [team, setTeam] = useState(null);
     const [players, setPlayers] = useState([]);
     const [selectedPlayers, setSelectedPlayers] = useState([]);
@@ -15,15 +17,14 @@ const CreateTeamPage = () => {
 
     useEffect(() => {
         const storedUsername = localStorage.getItem('username');
+        const token = localStorage.getItem('token');
+        setToken(token);
+
         if (storedUsername) {
             setUsername(storedUsername);
+            fetchUserTeam();
+            fetchTeamPlayers();
         }
-        // Fetch the user's team when the component mounts
-       fetchUserTeam();
-        
-       fetchTeamPlayers();
-          
-
     }, []);
 
     const fetchUserTeam = async () => {
@@ -177,12 +178,24 @@ const CreateTeamPage = () => {
         });
 
         if (response.ok) {
-            localStorage.removeItem('token');
+           localStorage.clear();
             navigate('/');
         } else {
             alert('Logout failed');
         }
     };
+    if(!token){
+        return(
+            <>
+                <NavigationMenu />
+                <BackgroundImageRotator>
+                    <h1>Register to play the game. If you already have an account, feel free to log in and play.</h1>
+                    <Link style={{marginBottom: '20px'}} to='/'>Register to the game</Link>
+                    <Link to='/login'>Log in to your account</Link>
+                </BackgroundImageRotator>
+            </>
+        );
+    }
 
     if (!team) {
         // User has no team, show create team form
@@ -287,15 +300,16 @@ const CreateTeamPage = () => {
                     <p>Team: {team.name}</p>
                     <p>Logged in as: {username}</p>
                     <div>
-                        <h2>Players</h2>
+                        <h1>Your player selection:</h1>
                         <ul>
                             {teamPlayers.map(player => (
-                                <li key={player.id}>
+                                <li style={{fontStyle: 'italic', fontWeight: 'bolder'}} key={player.id}>
                                     {player.photo && <img src={player.photo} alt={`${player.name}`} />} {/* Display player photo */}
-                                    {player.name} - Live Score: {player.score}
+                                    <span style={{marginRight: '5px'}}>{player.name}</span><span style={{color:'limegreen'}}>Live Score: {player.score}</span>
                                 </li>
                             ))}
                         </ul>
+                        <h1>Total Live Score: {teamPlayers.reduce((total, player) => total + player.score, 0)}</h1> {/* Calculate and display total score */}
                     </div>
                     <button onClick={handleLogout}>Logout</button>
                 </BackgroundImageRotator>

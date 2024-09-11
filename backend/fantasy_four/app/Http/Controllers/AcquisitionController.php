@@ -8,6 +8,7 @@ use App\Models\Team;
 use App\Models\Player;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\DB;
 
 class AcquisitionController extends Controller
 {
@@ -202,7 +203,24 @@ class AcquisitionController extends Controller
 
     private function getCurrentGameweekId()
     {
-        return 2;
+        // Make a request to the FPL API to get the current gameweek
+        $response = Http::get('https://fantasy.premierleague.com/api/bootstrap-static/');
+
+        if ($response->successful()) {
+            $data = $response->json();
+
+            $gameweeks = $data['events'];
+
+            $currentGameweek = 1; //Default value, If something goes wrong
+
+            foreach ($gameweeks as $gameweek) {
+                if ($gameweek['is_current']) {
+                    $currentGameweek = $gameweek['id'];
+                }
+            }
+        }
+
+        return $currentGameweek;
     }
 
     /**

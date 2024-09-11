@@ -38,3 +38,4 @@ Route::get('/players/search', [PlayerController::class, 'search']);
 Route::get('/players/{id}', [PlayerController::class, 'getById']);
 Route::delete('/players/{id}', [PlayerController::class, 'destroy']);
 Route::post('/players/merge', [PlayerController::class, 'merge']);
+Route::get('/best-players', [PlayerController::class, 'getBestPlayers']);

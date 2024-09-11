@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../css/LandingPage.css'; 
 import BackgroundImageRotator from './BackgroundImageRotator';
+import NavigationMenu from './NavigationMenu';
 
 const LoginPage = () => {
     const [login, setLogin] = useState('');
@@ -42,7 +43,10 @@ const LoginPage = () => {
     };
 
     return (
+        <>
+        <NavigationMenu></NavigationMenu>
         <BackgroundImageRotator>
+           
             <h1 style={{ fontSize: '70px' }}>Welcome to FantasyFour</h1>
             <h3>If you have already created an account, feel free to log in and play the game!</h3>
             <form onSubmit={handleFormSubmit}>
@@ -69,6 +73,7 @@ const LoginPage = () => {
           I forgot my password. Take me to the page for setting the new password.
         </Link>
         </BackgroundImageRotator>
+        </>
     );
 };
 

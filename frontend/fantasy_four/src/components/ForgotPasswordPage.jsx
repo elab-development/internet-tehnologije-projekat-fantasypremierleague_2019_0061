@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/LandingPage.css'; 
 import BackgroundImageRotator from './BackgroundImageRotator';
+import NavigationMenu from './NavigationMenu';
 
 const ChangePasswordPage = () => {
     const [email, setEmail] = useState('');
@@ -35,8 +36,10 @@ const ChangePasswordPage = () => {
     };
 
     return (
+        <>
+        <NavigationMenu />
         <BackgroundImageRotator>
-            <h1 style={{ fontSize: '70px' }}>Change Password</h1>
+            <h1 style={{ fontSize: '70px' }}>Change Forgotten Password</h1>
             <h3>Please enter your email and new password.</h3>
             <form onSubmit={handleFormSubmit}>
                 <label>Email:</label>
@@ -59,6 +62,7 @@ const ChangePasswordPage = () => {
             </form>
             {message && <p>{message}</p>}
         </BackgroundImageRotator>
+        </>
     );
 };
 

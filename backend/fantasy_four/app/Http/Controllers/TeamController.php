@@ -38,14 +38,6 @@ class TeamController extends Controller
         // Retrieve the ID of the currently authenticated user
         $userId = Auth::id();
 
-        // Create a new team with the authenticated user ID
-        /*$team = Team::create([
-            'name' => $validated['name'],
-            'user_id' => $userId,
-            'budget' => 1000.0,
-            'is_valid' => false
-        ]);*/
-
         $team = new Team();
         $team->user_id = $userId;
         $team->name = $validated['name'];

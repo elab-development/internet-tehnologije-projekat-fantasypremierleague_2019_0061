@@ -23,4 +23,8 @@ class User extends Authenticatable
     ];
 
     public $timestamps = false;
+
+    public function team(){
+        return $this->hasOne(Team::class);
+    }
 }
