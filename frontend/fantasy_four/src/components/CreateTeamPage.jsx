@@ -18,9 +18,10 @@ const CreateTeamPage = () => {
     useEffect(() => {
         const storedUsername = localStorage.getItem('username');
         const token = localStorage.getItem('token');
+        const role = localStorage.getItem('role');
         setToken(token);
 
-        if (storedUsername) {
+        if (token && role === 'manager') {
             setUsername(storedUsername);
             fetchUserTeam();
             fetchTeamPlayers();
@@ -196,6 +197,23 @@ const CreateTeamPage = () => {
             </>
         );
     }
+    if(token && localStorage.getItem('role') === 'admin'){
+        return(
+            <>
+                <NavigationMenu />
+                <BackgroundImageRotator>
+                    <h1>Hi, admin. This is the page where managers create and manage their teams.</h1>
+                    <button
+                        onClick={handleLogout}
+                        style={{ marginTop: '10px' }}
+                    >
+                        Logout
+                    </button>
+                    <Link to='/admin_dashboard'>Back to admin dashboard</Link>
+                </BackgroundImageRotator>
+            </>
+        );
+    }
 
     if (!team) {
         // User has no team, show create team form
@@ -238,9 +256,10 @@ const CreateTeamPage = () => {
                     <div
                         id="search-results"
                         style={{
-                            height: '300px',
-                            width: '300px',
-                            overflowY: 'auto',
+                            height: 'auto', // Allow it to grow naturally
+                            minHeight: '150px', // Set a minimum height
+                            maxHeight: '300px', // Optionally limit the maximum height
+                            overflowY: 'auto', // Allow scrolling if the list overflows
                             border: '1px solid #ccc',
                             padding: '10px',
                             backgroundColor: '#f9f9f9',
@@ -262,7 +281,10 @@ const CreateTeamPage = () => {
                             marginTop: '20px',
                             padding: '10px',
                             backgroundColor: '#e6e6e6',
-                            border: '1px solid #ccc'
+                            border: '1px solid #ccc',
+                            minHeight: '150px', // Set a minimum height
+                            maxHeight: '300px', // Optionally limit the maximum height
+                            overflowY: 'auto' // Allow scrolling if the list overflows
                         }}
                     >
                         <h2>Selected Players</h2>

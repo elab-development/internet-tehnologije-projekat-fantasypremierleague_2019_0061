@@ -33,7 +33,12 @@ const LoginPage = () => {
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('username', username);
                 localStorage.setItem('role', role);
-                navigate('/create_team');
+                if(role === 'admin'){
+                    navigate('/admin_dashboard');
+                } else {
+                    navigate('/create_team');
+                }
+                
             } else {
                 setMessage(`Login failed: ${data.message}`);
             }

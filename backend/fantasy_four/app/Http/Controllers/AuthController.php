@@ -19,6 +19,7 @@ class AuthController extends Controller
             'username' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
+            'role' => 'nullable|string|in:manager,admin'
         ]);
 
         if ($validator->fails()) {
@@ -43,7 +44,7 @@ class AuthController extends Controller
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'manager'
+            'role' => $request->role ?? 'manager'
         ]);
 
         return response()->json([

@@ -128,7 +128,7 @@ const PlayerPage = ({ mode }) => {
                         onChange={handleChange}
                     />
 
-                    <button type="button" onClick={handleSaveChanges}>Save changes</button> {/* Save button */}
+                    <button style={{marginBottom: '5px'}} type="button" onClick={handleSaveChanges}>Save changes</button> {/* Save button */}
                     <button type="button" onClick={handleDelete} disabled={mode === 'create'}>Delete the player</button> {/* Delete button */}
                 </form>
             </BackgroundImageRotator>

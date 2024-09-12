@@ -50,10 +50,11 @@ const AdminDashboardPage = () => {
             </form>
            
             <select name="players" onChange={handlePlayerSelection}>
-            {players.map((player) => (
-                            <option value={player.id}>{player.name}</option>
-                        ))}
-            </select>
+    <option value="">Select a player</option>
+    {players.map((player) => (
+        <option key={player.id} value={player.id}>{player.name}</option>
+    ))}
+</select>
 
             <button style={{color: 'black'}}><Link to="/player">Create a new player</Link></button>
     

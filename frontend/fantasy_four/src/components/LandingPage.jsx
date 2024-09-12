@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../css/LandingPage.css';
 import BackgroundImageRotator from './BackgroundImageRotator';
 import NavigationMenu from './NavigationMenu';
@@ -8,6 +8,7 @@ const LandingPage = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -32,12 +33,7 @@ const LandingPage = () => {
 
       if (response.ok) {
         const data = response.json();
-
-        // Show success message as an alert
-        alert(data.message);
-
-        // Optionally, you can also handle the user data here
-        console.log(data.user);
+        navigate('/login');
       } else {
         const errorData = await response.json();
         console.error('Server responded with:', errorData);

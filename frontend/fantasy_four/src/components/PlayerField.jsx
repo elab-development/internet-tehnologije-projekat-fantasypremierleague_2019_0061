@@ -9,7 +9,7 @@ const PlayerField = ({ player, onAddOrRemove }) => {
     };
 
     return (
-        <div className="player-field">
+        <div className="player-field" style={{backgroundColor: 'green', marginBottom: '3px'}}>
             <p>{player.name}</p>
             <button 
                 onClick={handleButtonClick}
