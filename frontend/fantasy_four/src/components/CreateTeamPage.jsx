@@ -238,7 +238,7 @@ const CreateTeamPage = () => {
             <>
                 <NavigationMenu />
                 <BackgroundImageRotator>
-                    <h1>Add players to your team</h1>
+                    <h1 style={{marginTop: '100px'}}>Add players to your team</h1>
                     <p>Team: {team.name}</p>
                     <p>Logged in as: {username}</p>
                     <form id='player-input-form' onSubmit={searchPlayers}>
@@ -278,6 +278,8 @@ const CreateTeamPage = () => {
                     <div
                         id="selected-players"
                         style={{
+                            color: 'green',
+                            fontWeight: 'bold',
                             marginTop: '20px',
                             padding: '10px',
                             backgroundColor: '#e6e6e6',
